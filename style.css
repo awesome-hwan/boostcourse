@@ -93,7 +93,7 @@ nav.categories ul {
 nav.categories ul li {
   position: relative;
   padding: 0.1rem 0.5rem;
-
+  white-space: nowrap;
 }
 
 
@@ -101,6 +101,7 @@ nav.categories ul li {
 nav.categories ul li a {
   color: black;
   line-height: 35px;
+  font-size: 0.8rem;
 }
 
 nav.categories ul .active::after {
