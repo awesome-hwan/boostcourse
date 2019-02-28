@@ -83,12 +83,6 @@ nav.categories ul {
   display: flex;
   justify-content: center;
 }
-/*clear fix*/
-/*nav ul::after {
-  display: block;
-  content: '';
-  clear: both;
-}*/
 
 nav.categories ul li {
   position: relative;
