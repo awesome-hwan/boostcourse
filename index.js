@@ -37,18 +37,21 @@ function active(evt) {
 }
 
 function makeTemplate(data) {
-  console.log("ddddddddd",data.products);
   var a = document.querySelector("#product-list");
   var b = document.querySelector(".products ul");
     var datas = data.products;
     console.log(datas);
-      var result = a.innerHTML.replace("{description}", datas[0].description)
-                                .replace("{placeName}",datas[0].placeName)
-                                .replace("{content}",datas[0].content);
-
+    var result = "";
+    for (var i=0; i< datas.length; i++){
+      // console.log("#####", datas[i].description);
+      result += a.innerHTML.replace("{description}", datas[i].description)
+                            .replace("{placeName}",datas[i].placeName)
+                            .replace("{content}",datas[i].content)
+                            .replace("{id}", datas[i].fileId);
+    }
     console.log('aa', result);
 
-    b.innerHTML += result;
+    b.innerHTML = result;
 
   /*for(var i =0; i<=datas.length; i++){
 
