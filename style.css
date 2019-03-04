@@ -68,7 +68,7 @@ section.promotion {
 section.promotion .promotion-window {
   width: 100%;
   display: flex;
-  transition: all 1s;
+  /*transition: all 1s;*/
 
 }
 section.promotion .promotion-window img {

@@ -65,22 +65,41 @@ function sendAjax(url) {
 function click() {
   var a = document.querySelectorAll(".promotion-window img");
   var b = document.querySelector(".promotion-window");
+  var current = 1;
   // console.log("#######", a);
   var firstItem = a[0];
   b.appendChild(firstItem.cloneNode(true));
   var per = -100;
   for(var i=0; i<a.length; i++){
     a[i].addEventListener("click", function(evt) {
-      console.log(evt.target.parentNode);
-      evt.target.parentNode.style.transform = `translateX(${per}%)`;
-      if(per <= -399){
-        per = 0 ;
+
+
+      console.log("#######current", current);
+      console.log("#@@#@@ a.length", a.length);
+      current++;
+      console.log("perperper", per);
+      if(current > a.length){
+          evt.target.parentNode.style.transform = `translateX(${per}%)`;
+          evt.target.parentNode.style.transition = `all 1s ease-out`;
+          per -= 100;
+
+          setTimeout(function() {
+              evt.target.parentNode.style.transform = `translateX(0%)`;
+              evt.target.parentNode.style.transition = `none`;
+              current = 1;
+              per = -100;
+          }, 1000);
+
       } else {
-        per -= 100;
+
+        evt.target.parentNode.style.transform = `translateX(${per}%)`;
+        evt.target.parentNode.style.transition = `all 1s ease-out`;
+          per -= 100;
+
       }
+
     })
   }
-
 }
 document.addEventListener("DOMContentLoaded", function() {
     // console.log("Dom Loaded");
