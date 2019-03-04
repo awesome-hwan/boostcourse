@@ -6,7 +6,7 @@ function init () {
     var jsonObj = JSON.parse(this.responseText);
     var cate = jsonObj.items;
 
-    console.log(jsonObj);
+    // console.log(jsonObj);
     // 카테고리 생성
     var cateUl = document.querySelector(".categories ul");
     var cateLi = document.querySelector("#categori-list");
@@ -24,14 +24,10 @@ function init () {
   });
   oReq.open("GET", "./src/data/categori.json");//parameter를 붙여서 보낼수있음.
   oReq.send();
-
-
 }
 
+
 function active(evt) {
-  // console.log(evt.target.innerHTML);
-
-
     var url = './src/data/products.json';
     sendAjax(url);
 }
@@ -40,7 +36,7 @@ function makeTemplate(data) {
   var a = document.querySelector("#product-list");
   var b = document.querySelector(".products ul");
     var datas = data.products;
-    console.log(datas);
+    // console.log(datas);
     var result = "";
     for (var i=0; i< datas.length; i++){
       // console.log("#####", datas[i].description);
@@ -49,17 +45,9 @@ function makeTemplate(data) {
                             .replace("{content}",datas[i].content)
                             .replace("{id}", datas[i].fileId);
     }
-    console.log('aa', result);
+    // console.log('aa', result);
 
     b.innerHTML = result;
-
-  /*for(var i =0; i<=datas.length; i++){
-
-      result += a.innerHTML.replace("{description}", datas[i].description)
-                             .replace("{placeName}",datas[i].placeName)
-                             .replace("{content}",datas[i].content)
-  };*/
-  // b.innerHTML += result;
 }
 
 // 클릭시 promotion을 가져온다
@@ -74,7 +62,28 @@ function sendAjax(url) {
   oReq.send();
 }
 
+function click() {
+  var a = document.querySelectorAll(".promotion-window img");
+  var b = document.querySelector(".promotion-window");
+  // console.log("#######", a);
+  var firstItem = a[0];
+  b.appendChild(firstItem.cloneNode(true));
+  var per = -100;
+  for(var i=0; i<a.length; i++){
+    a[i].addEventListener("click", function(evt) {
+      console.log(evt.target.parentNode);
+      evt.target.parentNode.style.transform = `translateX(${per}%)`;
+      if(per <= -399){
+        per = 0 ;
+      } else {
+        per -= 100;
+      }
+    })
+  }
+
+}
 document.addEventListener("DOMContentLoaded", function() {
-    console.log("Dom Loaded");
+    // console.log("Dom Loaded");
     init();
+    click();
 })

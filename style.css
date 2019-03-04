@@ -68,12 +68,15 @@ section.promotion {
 section.promotion .promotion-window {
   width: 100%;
   display: flex;
+  transition: all 1s;
 
 }
 section.promotion .promotion-window img {
-  width: 100%;
+  min-width: 100%;
   height: 100%;
   transform: translateY(-10%);
+
+
 }
 
 nav.categories ul {
