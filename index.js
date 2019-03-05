@@ -62,47 +62,40 @@ function sendAjax(url) {
   oReq.send();
 }
 
-function click() {
-  var a = document.querySelectorAll(".promotion-window img");
-  var b = document.querySelector(".promotion-window");
+function promotionMove() {
+  var promotionImg = document.querySelectorAll(".promotion-window img");
+  var promotionWindow = document.querySelector(".promotion-window");
   var current = 1;
-  // console.log("#######", a);
-  var firstItem = a[0];
-  b.appendChild(firstItem.cloneNode(true));
   var per = -100;
-  for(var i=0; i<a.length; i++){
-    a[i].addEventListener("click", function(evt) {
 
+  var firstItem = promotionImg[0];
+  promotionWindow.appendChild(firstItem.cloneNode(true));
 
-      console.log("#######current", current);
-      console.log("#@@#@@ a.length", a.length);
+      setInterval( function() {
       current++;
-      console.log("perperper", per);
-      if(current > a.length){
-          evt.target.parentNode.style.transform = `translateX(${per}%)`;
-          evt.target.parentNode.style.transition = `all 1s ease-out`;
+      if(current > promotionImg.length){
+          promotionWindow.style.transform = `translateX(${per}%)`;
+          promotionWindow.style.transition = `all 1s ease-out`;
           per -= 100;
 
           setTimeout(function() {
-              evt.target.parentNode.style.transform = `translateX(0%)`;
-              evt.target.parentNode.style.transition = `none`;
+              promotionWindow.style.transform = `translateX(0%)`;
+              promotionWindow.style.transition = `none`;
               current = 1;
               per = -100;
           }, 1000);
 
       } else {
 
-        evt.target.parentNode.style.transform = `translateX(${per}%)`;
-        evt.target.parentNode.style.transition = `all 1s ease-out`;
+        promotionWindow.style.transform = `translateX(${per}%)`;
+        promotionWindow.style.transition = `all 1s ease-out`;
           per -= 100;
 
-      }
-
-    })
-  }
+        }
+      }, 2000)
 }
 document.addEventListener("DOMContentLoaded", function() {
     // console.log("Dom Loaded");
     init();
-    click();
+    promotionMove();
 })
