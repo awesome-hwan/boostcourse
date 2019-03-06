@@ -32,10 +32,16 @@ function active(evt) {
     sendAjax(url);
 
     var activeList = document.querySelectorAll('.categories-ul a');
+
     for (var i=0; i<activeList.length; i++){
         activeList[i].classList.remove('active');
+        if (activeList[i].innerHTML === evt.target.innerHTML ) {
+            evt.target.classList.add('active');
+        }
     }
-        evt.target.classList.add('active');
+
+
+
 
 }
 
