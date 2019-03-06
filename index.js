@@ -30,6 +30,13 @@ function init () {
 function active(evt) {
     var url = './src/data/products.json';
     sendAjax(url);
+
+    var activeList = document.querySelectorAll('.categories-ul a');
+    for (var i=0; i<activeList.length; i++){
+        activeList[i].classList.remove('active');
+    }
+        evt.target.classList.add('active');
+
 }
 
 function makeTemplate(data) {
