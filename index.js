@@ -1,12 +1,12 @@
+var baseUrl = "http://localhost:8080";
 
 function init () {
   // 서버요청
-  var oReq = new XMLHttpRequest();
+    var oReq = new XMLHttpRequest();
        oReq.addEventListener("load", function() {
     var jsonObj = JSON.parse(this.responseText);
     var cate = jsonObj.items;
 
-    // console.log(jsonObj);
     // 카테고리 생성
     var cateUl = document.querySelector(".categories ul");
     var cateLi = document.querySelector("#categori-list");
@@ -17,11 +17,24 @@ function init () {
     }
     cateUl.innerHTML += cateResult;
 
+
+   var cateCount = document.querySelector("#categori-count");
+   var b = document.querySelector(".promotion-total");
+   var countResult = "";
+   var sum = 0;
+
+   for(var i=0; i<cate.length; i++){
+       sum += cate[i].count;
+   }
+   countResult += cateCount.innerHTML.replace('{count}', sum);
+   b.innerHTML = countResult;
     // 카테고리 클릭 시 활성화
     cateUl.addEventListener("click", function(evt) {
       active(evt) ;
+
     })
   });
+  // oReq.open("GET", baseUrl+"/api/categories");//parameter를 붙여서 보낼수있음.
   oReq.open("GET", "./src/data/categori.json");//parameter를 붙여서 보낼수있음.
   oReq.send();
 }
@@ -30,9 +43,10 @@ function init () {
 function active(evt) {
     var url = './src/data/products.json';
     sendAjax(url);
+    // sendAjax(baseUrl +"/api/products" );
 
+    // 카테고리 클릭시 활성
     var activeList = document.querySelectorAll('.categories-ul a');
-
     for (var i=0; i<activeList.length; i++){
         activeList[i].classList.remove('active');
         if (activeList[i].innerHTML === evt.target.innerHTML ) {
@@ -68,7 +82,7 @@ function sendAjax(url) {
   var oReq = new XMLHttpRequest();
   oReq.addEventListener('load', function() {
       var data = JSON.parse(this.responseText);
-      // console.log("######", data);
+
       makeTemplate(data);
   });
   oReq.open("GET", url);
@@ -111,4 +125,5 @@ document.addEventListener("DOMContentLoaded", function() {
     // console.log("Dom Loaded");
     init();
     promotionMove();
+
 })

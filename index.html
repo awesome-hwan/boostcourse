@@ -39,7 +39,7 @@
                 </ul>
             </nav>
             <section class="promotion-total">
-                <p>여기 예매 가능한 행사가 <span>5개</span> 있습니다.</p>
+                <!--<p>여기 예매 가능한 행사가 <span>5개</span> 있습니다.</p>-->
             </section>
             <article class="products">
 
@@ -148,7 +148,7 @@
             <a href="#">{name}</a>
         </li>
     </script>
-    <script id="product-list", type="text/template">
+    <script id="product-list" type="text/template">
         <li>
             <figure>
                 <img src="http://localhost:8080/file?fileId={id}" alt="dddd">
@@ -163,6 +163,9 @@
                     </figcaption>
             </figure>
         </li>
+    </script>
+    <script id="categori-count" type="text/template">
+        <p>여기 예매 가능한 행사가 <span>{count}개</span> 있습니다.</p>
     </script>
 </body>
 </html>
