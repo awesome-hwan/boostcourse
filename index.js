@@ -3,46 +3,46 @@ var baseUrl = "http://localhost:8080";
 function init () {
   // 서버요청
     var oReq = new XMLHttpRequest();
-       oReq.addEventListener("load", function() {
-    var jsonObj = JSON.parse(this.responseText);
-    var cate = jsonObj.items;
+        oReq.addEventListener("load", function() {
+            var jsonObj = JSON.parse(this.responseText);
+            var cate = jsonObj.items;
 
-    // 카테고리 생성
-    var cateUl = document.querySelector(".categories ul");
-    var cateLi = document.querySelector("#categori-list");
-    var cateResult = "";
+            // 카테고리 생성
+            var cateUl = document.querySelector(".categories ul");
+            var cateLi = document.querySelector("#categori-list");
+            var cateResult = "";
 
-    for(var i =0; i<cate.length; i++){
-      cateResult += cateLi.innerHTML.replace('{name}', cate[i].name);
-    }
-    cateUl.innerHTML += cateResult;
+            for(var i =0; i<cate.length; i++){
+              cateResult += cateLi.innerHTML.replace('{name}', cate[i].name);
+            }
+            cateUl.innerHTML += cateResult;
 
 
-   var cateCount = document.querySelector("#categori-count");
-   var b = document.querySelector(".promotion-total");
-   var countResult = "";
-   var sum = 0;
+           var cateCount = document.querySelector("#categori-count");
+           var b = document.querySelector(".promotion-total");
+           var countResult = "";
+           var sum = 0;
 
-   for(var i=0; i<cate.length; i++){
-       sum += cate[i].count;
-   }
-   countResult += cateCount.innerHTML.replace('{count}', sum);
-   b.innerHTML = countResult;
-    // 카테고리 클릭 시 활성화
-    cateUl.addEventListener("click", function(evt) {
-      active(evt) ;
-
-    })
+           for(var i=0; i<cate.length; i++){
+               sum += cate[i].count;
+           }
+           countResult += cateCount.innerHTML.replace('{count}', sum);
+           b.innerHTML = countResult;
+            // 카테고리 클릭 시 활성화
+            cateUl.addEventListener("click", function(evt) {
+              active(evt) ;
+            })
   });
   // oReq.open("GET", baseUrl+"/api/categories");//parameter를 붙여서 보낼수있음.
-  oReq.open("GET", "./src/data/categori.json");//parameter를 붙여서 보낼수있음.
+  oReq.open("GET", "./src/data/categori.json"); //테스트코드
   oReq.send();
 }
 
 
 function active(evt) {
-    var url = './src/data/products.json';
-    sendAjax(url);
+    var url = './src/data/products.json'; //테스트코드
+
+
     // sendAjax(baseUrl +"/api/products" );
 
     // 카테고리 클릭시 활성
@@ -51,11 +51,32 @@ function active(evt) {
         activeList[i].classList.remove('active');
         if (activeList[i].innerHTML === evt.target.innerHTML ) {
             evt.target.classList.add('active');
+
         }
     }
+  console.log("evt.target", evt.target.innerHTML);
 
+   switch (evt.target.innerHTML) {
+     case "전시":
+       var param = "categoryId=1";
+       break;
+     case "뮤지컬":
+       var param = "categoryId=2";
+       break;
+     case "콘서트":
+       var param = "categoryId=3";
+       break;
+     case "클래식":
+       var param = "categoryId=4";
+       break;
+     case "연극":
+       var param = "categoryId=5";
+       break;
+     default:
+       break;
+   }
 
-
+  sendAjax(url, param);  //테스트코드
 
 }
 
@@ -72,18 +93,18 @@ function makeTemplate(data) {
                             .replace("{content}",datas[i].content)
                             .replace("{id}", datas[i].fileId);
     }
-    // console.log('aa', result);
 
     b.innerHTML = result;
 }
 
 // 클릭시 promotion을 가져온다
-function sendAjax(url) {
+function sendAjax(url, param) {
   var oReq = new XMLHttpRequest();
   oReq.addEventListener('load', function() {
       var data = JSON.parse(this.responseText);
 
-      makeTemplate(data);
+      makeTemplate($zdataparam);
+      console.log("#############", param);
   });
   oReq.open("GET", url);
   oReq.send();
@@ -119,8 +140,9 @@ function promotionMove() {
           per -= 100;
 
         }
-      }, 2000)
+      }, 10000)
 }
+
 document.addEventListener("DOMContentLoaded", function() {
     // console.log("Dom Loaded");
     init();
