@@ -19,7 +19,7 @@ function init () {
 
 
            var cateCount = document.querySelector("#categori-count");
-           var b = document.querySelector(".promotion-total");
+           var cateWindow = document.querySelector(".promotion-total");
            var countResult = "";
            var sum = 0;
 
@@ -27,10 +27,11 @@ function init () {
                sum += cate[i].count;
            }
            countResult += cateCount.innerHTML.replace('{count}', sum);
-           b.innerHTML = countResult;
+          cateWindow.innerHTML = countResult;
             // 카테고리 클릭 시 활성화
             cateUl.addEventListener("click", function(evt) {
-              active(evt) ;
+
+              active(evt, cate);
             })
   });
   // oReq.open("GET", baseUrl+"/api/categories");//parameter를 붙여서 보낼수있음.
@@ -39,13 +40,11 @@ function init () {
 }
 
 
-function active(evt) {
-    var url = './src/data/products.json'; //테스트코드
+function active(evt, cate) {
+    var url = `${baseUrl}/api/products`;
+    // var url = './src/data/products.json'; //테스트코드
 
-
-    // sendAjax(baseUrl +"/api/products" );
-
-    // 카테고리 클릭시 활성
+    // 카테고리 클릭시 contents 활성화
     var activeList = document.querySelectorAll('.categories-ul a');
     for (var i=0; i<activeList.length; i++){
         activeList[i].classList.remove('active');
@@ -53,8 +52,22 @@ function active(evt) {
             evt.target.classList.add('active');
 
         }
+
     }
-  console.log("evt.target", evt.target.innerHTML);
+    // 카테고리 클릭시 count 변경
+    var cateCount = document.querySelector("#categori-count");
+    var cateWindow = document.querySelector(".promotion-total");
+    var countResult = "";
+    var sum = 0;
+      for (var i=0; i<cate.length; i++){
+        if(cate[i].name === evt.target.innerHTML){
+          sum = cate[i].count;
+        } else if ("전체리스트" ===evt.target.innerHTML){
+          sum += cate[i].count;
+        }
+      }
+    countResult += cateCount.innerHTML.replace('{count}', sum);
+    cateWindow.innerHTML = countResult;
 
    switch (evt.target.innerHTML) {
      case "전시":
@@ -81,20 +94,20 @@ function active(evt) {
 }
 
 function makeTemplate(data) {
-  var a = document.querySelector("#product-list");
-  var b = document.querySelector(".products ul");
+  var productTemp = document.querySelector("#product-list");
+  var productWindow = document.querySelector(".products ul");
     var datas = data.products;
     // console.log(datas);
     var result = "";
     for (var i=0; i< datas.length; i++){
       // console.log("#####", datas[i].description);
-      result += a.innerHTML.replace("{description}", datas[i].description)
+      result += productTemp.innerHTML.replace("{description}", datas[i].description)
                             .replace("{placeName}",datas[i].placeName)
                             .replace("{content}",datas[i].content)
                             .replace("{id}", datas[i].fileId);
     }
 
-    b.innerHTML = result;
+  productWindow.innerHTML = result;
 }
 
 // 클릭시 promotion을 가져온다
@@ -102,11 +115,9 @@ function sendAjax(url, param) {
   var oReq = new XMLHttpRequest();
   oReq.addEventListener('load', function() {
       var data = JSON.parse(this.responseText);
-
-      makeTemplate($zdataparam);
-      console.log("#############", param);
+      makeTemplate(data);
   });
-  oReq.open("GET", url);
+  oReq.open("GET", `${url}?${param}`);
   oReq.send();
 }
 
