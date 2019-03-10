@@ -30,13 +30,13 @@ header .gnb-left .logo {
 
 header .gnb-left .logo span {
   position: absolute;
-  left: 4px;
-  top: 4px;
-  width: 18px;
-  height: 18px;
+  left: 5px;
+  top: 5px;
+  width: 16px;
+  height: 16px;
   background: url("https://ssl.pstatic.net/sstatic/search/mobile/img/sp_common_5d10f286.png") 0 0 no-repeat ;
-  background-size: 250px 235px;
-  background-position: 0 -184px;
+  background-size: 211px 213px;
+  background-position: 0 -167px;
 
 }
 
@@ -84,7 +84,7 @@ nav.categories ul {
   border-bottom: 1px solid #dee3eb;
   overflow: hidden;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
 }
 
 nav.categories ul li {

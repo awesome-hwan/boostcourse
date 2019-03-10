@@ -116,9 +116,11 @@ function sendAjax(url, param) {
   oReq.addEventListener('load', function() {
       var data = JSON.parse(this.responseText);
       makeTemplate(data);
+
   });
   oReq.open("GET", `${url}?${param}`);
   oReq.send();
+  viewMoreSendAjax(param);
 }
 
 function promotionMove() {
@@ -153,6 +155,56 @@ function promotionMove() {
         }
       }, 10000)
 }
+
+function vireMoreTemplate(datas) {
+  console.log("#############", datas);
+
+
+  var result = "";
+  var productTemp = document.querySelector("#product-list");
+  var productWindow = document.querySelector(".products ul");
+
+
+    for (var i=0; i< datas.length; i++){
+      // console.log("#####", datas[i].description);
+      result += productTemp.innerHTML.replace("{description}", datas[i].description)
+          .replace("{placeName}",datas[i].placeName)
+          .replace("{content}",datas[i].content)
+          .replace("{id}", datas[i].fileId);
+    }
+    productWindow.innerHTML += result;
+}
+
+function viewMoreSendAjax(param) {
+  var more = document.querySelector(".more_view button");
+  var start = 0;
+
+  console.log("######", start);
+
+  var oReq = new XMLHttpRequest();
+  oReq.addEventListener('load', function() {
+
+    var data = JSON.parse(this.responseText);
+    var datas = data.products;
+
+    more.addEventListener("click", function() {
+      if (start >= 0){
+        start += 4;
+      }
+      console.log("start#########",start);
+      vireMoreTemplate(datas);
+    })
+
+
+  });
+  var moreUrl = `${baseUrl}/api/products?${param}&start=${start}`;
+  console.log("moreUrl", moreUrl);
+  oReq.open("GET", moreUrl);
+  oReq.send();
+}
+
+
+
 function topMove() {
   var movebtn = document.querySelector(".top_move");
   movebtn.addEventListener("click", function () {
@@ -165,6 +217,6 @@ document.addEventListener("DOMContentLoaded", function() {
     // console.log("Dom Loaded");
     init();
     promotionMove();
-    topMove()
+    topMove();
 
 })
