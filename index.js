@@ -153,10 +153,18 @@ function promotionMove() {
         }
       }, 10000)
 }
+function topMove() {
+  var movebtn = document.querySelector(".top_move");
+  movebtn.addEventListener("click", function () {
+    window.scrollTo(0,0);
+
+  })
+}
 
 document.addEventListener("DOMContentLoaded", function() {
     // console.log("Dom Loaded");
     init();
     promotionMove();
+    topMove()
 
 })

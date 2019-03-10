@@ -139,7 +139,6 @@ article.products {
 article.products li {
   box-sizing: border-box;
   display: inline-block;
-  margin-top: 0.5rem;
   border: 1px solid #dee3eb;
 
 }
@@ -212,20 +211,23 @@ article.products li figure figcaption .product-detail:before {
   border: 1px solid #dee3eb;
   font-size: 0.8rem;
 }
+.more_view button:hover {
+  cursor: pointer;
+}
 
 footer {
   text-align: center;
 }
-footer .move_top {
+footer .top_move {
   margin-top: 1rem;
 
 }
 
-footer .move_top a {
+footer .top_move a {
   color: #000000;
   font-size: 0.9rem;
 }
-footer .move_top a span {
+footer .top_move a span {
   color: #888;
 
 }
