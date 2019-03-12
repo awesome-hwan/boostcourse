@@ -126,27 +126,34 @@ section.promotion-total span {
 
 article.products {
 
-  column-count: 2;
+  /*column-count: 2;*/
   /*row-count: 2;*/
   /*column-width: 175px;*/
-  column-gap: 5px;
-
+  /*column-gap: 5px;*/
+  vertical-align: top;
 
 }
 
+article.products ul {
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  /*vertical-align: before-edge;*/
+  vertical-align: top;
 
+}
 
 article.products li {
-  box-sizing: border-box;
-  display: inline-block;
+  width: 49%;
+  height: 50%;
   border: 1px solid #dee3eb;
+  padding-bottom: 0;
+  float: left;
 
 }
 
 
 article.products li figure {
-
-  display: inline-block;
   background: #ffffff;
 }
 

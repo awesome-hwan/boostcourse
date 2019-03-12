@@ -16,15 +16,15 @@
                 <a class="logo" href="#"><span>naver</span></a>
                 <a href="#">예약</a>
             </h1>
-            <a class="gnb-right" href="#">aaaa@naver.com</a>
+            <a class="gnb-right" href="#">boostcourse@naver.com</a>
         </header>
         <div class="container">
             <section class="promotion">
                 <div class="promotion-window">
-                    <img src="./src/img/response-0.png" alt="">
+                    <!--<img src="./src/img/response-0.png" alt="">
                     <img src="./src/img/response-1.png" alt="">
                     <img src="./src/img/response-2.png" alt="">
-                    <img src="./src/img/response-3.png" alt="">
+                    <img src="./src/img/response-3.png" alt="">-->
                 </div>
 
             </section>
@@ -109,11 +109,17 @@
          </div>
      </div>
      <script src="index.js"></script>
+
+    <script id="promotion-img" type="text/template">
+      <img src="http://localhost:8080/file?fileId={id}">
+    </script>
+
      <script id="categori-list" type="text/template">
          <li>
              <a href="#">{name}</a>
          </li>
      </script>
+
      <script id="product-list" type="text/template">
          <li>
              <figure>
@@ -133,5 +139,6 @@
      <script id="categori-count" type="text/template">
          <p>여기 예매 가능한 행사가 <span>{count}개</span> 있습니다.</p>
      </script>
+
  </body>
  </html>

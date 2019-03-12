@@ -1,6 +1,6 @@
 var baseUrl = "http://localhost:8080";
 
-function init () {
+function initOne () {
   // 서버요청
     var oReq = new XMLHttpRequest();
         oReq.addEventListener("load", function() {
@@ -34,9 +34,33 @@ function init () {
               active(evt, cate);
             })
   });
-  // oReq.open("GET", baseUrl+"/api/categories");//parameter를 붙여서 보낼수있음.
-  oReq.open("GET", "./src/data/categori.json"); //테스트코드
+  oReq.open("GET", baseUrl+"/api/categories");//parameter를 붙여서 보낼수있음.
+  // oReq.open("GET", "./src/data/categori.json"); //테스트코드
   oReq.send();
+
+}
+
+function initTwo () {
+  var oReq = new XMLHttpRequest();
+  oReq.addEventListener("load", function() {
+    var jsonObj = JSON.parse(this.responseText);
+    var promotion = jsonObj.items;
+
+    var promotionWindow = document.querySelector(".promotion-window");
+    var promotionTemp = document.querySelector("#promotion-img");
+    var promotionResult = "";
+    for(var i =0; i<promotion.length/2; i++){
+      promotionResult  += promotionTemp.innerHTML.replace('{id}', promotion[i].fileId);
+
+    }
+    promotionWindow.innerHTML += promotionResult;
+    promotionMove();
+    });
+
+  oReq.open("GET", baseUrl+"/api/promotions");//parameter를 붙여서 보낼수있음.
+  // oReq.open("GET", "./src/data/promotions.json"); //테스트코드
+  oReq.send();
+
 }
 
 
@@ -88,85 +112,81 @@ function active(evt, cate) {
      default:
        break;
    }
-
-  sendAjax(url, param);  //테스트코드
-
+  sendAjax(url, param);
 }
+
 
 function makeTemplate(data) {
   var productTemp = document.querySelector("#product-list");
   var productWindow = document.querySelector(".products ul");
-    var datas = data.products;
-    // console.log(datas);
-    var result = "";
-    for (var i=0; i< datas.length; i++){
-      // console.log("#####", datas[i].description);
-      result += productTemp.innerHTML.replace("{description}", datas[i].description)
-                            .replace("{placeName}",datas[i].placeName)
-                            .replace("{content}",datas[i].content)
-                            .replace("{id}", datas[i].fileId);
-    }
+  var datas = data.products;
+  var result = "";
 
-  productWindow.innerHTML = result;
+  for (var i=0; i< datas.length; i++){
+    result += productTemp.innerHTML.replace("{description}", datas[i].description)
+                          .replace("{placeName}",datas[i].placeName)
+                          .replace("{content}",datas[i].content)
+                          .replace("{id}", datas[i].fileId);
+  }
+    productWindow.innerHTML = result;
 }
 
 // 클릭시 promotion을 가져온다
 function sendAjax(url, param) {
   var oReq = new XMLHttpRequest();
-  oReq.addEventListener('load', function() {
-      var data = JSON.parse(this.responseText);
-      makeTemplate(data);
+      oReq.addEventListener('load', function() {
+          var data = JSON.parse(this.responseText);
+          makeTemplate(data);
+      });
 
-  });
-  oReq.open("GET", `${url}?${param}`);
-  oReq.send();
-  viewMoreSendAjax(param);
+      oReq.open("GET", `${url}?${param}`);
+      oReq.send();
+
+      viewMoreSendAjax(param);
 }
 
 function promotionMove() {
   var promotionImg = document.querySelectorAll(".promotion-window img");
   var promotionWindow = document.querySelector(".promotion-window");
+  var firstItem = promotionImg[0];
+
   var current = 1;
   var per = -100;
+  var setTime = 2000;
 
-  var firstItem = promotionImg[0];
-  promotionWindow.appendChild(firstItem.cloneNode(true));
+      promotionWindow.appendChild(firstItem.cloneNode());
 
       setInterval( function() {
       current++;
-      if(current > promotionImg.length){
+        if(current > promotionImg.length){
+            promotionWindow.style.transform = `translateX(${per}%)`;
+            promotionWindow.style.transition = `all 1s ease-out`;
+            per -= 100;
+
+            setTimeout(function() {
+                promotionWindow.style.transform = `translateX(0%)`;
+                promotionWindow.style.transition = `none`;
+                current = 1;
+                per = -100;
+            }, setTime/2);
+
+        } else {
+
           promotionWindow.style.transform = `translateX(${per}%)`;
           promotionWindow.style.transition = `all 1s ease-out`;
           per -= 100;
 
-          setTimeout(function() {
-              promotionWindow.style.transform = `translateX(0%)`;
-              promotionWindow.style.transition = `none`;
-              current = 1;
-              per = -100;
-          }, 1000);
-
-      } else {
-
-        promotionWindow.style.transform = `translateX(${per}%)`;
-        promotionWindow.style.transition = `all 1s ease-out`;
-          per -= 100;
-
-        }
-      }, 10000)
+          }
+      }, setTime)
 }
 
 function vireMoreTemplate(datas) {
-  console.log("#############", datas);
-
 
   var result = "";
   var productTemp = document.querySelector("#product-list");
   var productWindow = document.querySelector(".products ul");
 
-
     for (var i=0; i< datas.length; i++){
-      // console.log("#####", datas[i].description);
       result += productTemp.innerHTML.replace("{description}", datas[i].description)
           .replace("{placeName}",datas[i].placeName)
           .replace("{content}",datas[i].content)
@@ -179,13 +199,11 @@ function viewMoreSendAjax(param) {
   var more = document.querySelector(".more_view button");
   var start = 0;
 
-  console.log("######", start);
-
   var oReq = new XMLHttpRequest();
-  oReq.addEventListener('load', function() {
+      oReq.addEventListener('load', function() {
 
-    var data = JSON.parse(this.responseText);
-    var datas = data.products;
+  var data = JSON.parse(this.responseText);
+  var datas = data.products;
 
     more.addEventListener("click", function() {
       if (start >= 0){
@@ -214,9 +232,8 @@ function topMove() {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-    // console.log("Dom Loaded");
-    init();
-    promotionMove();
+    initOne();
+    initTwo();
     topMove();
 
 })
