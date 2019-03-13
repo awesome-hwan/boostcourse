@@ -135,20 +135,29 @@ article.products {
 }
 
 article.products ul {
-  display: inline-flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  /*display: inline-flex;*/
+  /*flex-direction: row;*/
+  /*flex-wrap: wrap;*/
   /*vertical-align: before-edge;*/
   vertical-align: top;
 
 }
 
-article.products li {
+article.products li:nth-child(2n) {
+  float: right;
+  display: inline;
   width: 49%;
-  height: 50%;
+  border: 1px solid #dee3eb;
+  padding-bottom: -30px;
+
+}
+
+article.products li:nth-child(2n-1) {
+  float: left;
+  display: inline;
+  width: 49%;
   border: 1px solid #dee3eb;
   padding-bottom: 0;
-  float: left;
 
 }
 
