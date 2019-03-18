@@ -1,6 +1,6 @@
 var baseUrl = "http://localhost:8080";
 
-function initOne () {
+function initcategori () {
   // 서버요청
     var oReq = new XMLHttpRequest();
         oReq.addEventListener("load", function() {
@@ -40,12 +40,12 @@ function initOne () {
 
 }
 
-function initTwo () {
+function initpromotions () {
   var oReq = new XMLHttpRequest();
   oReq.addEventListener("load", function() {
     var jsonObj = JSON.parse(this.responseText);
     var promotion = jsonObj.items;
-
+    console.log("promotion", promotion);
     var promotionWindow = document.querySelector(".promotion-window");
     var promotionTemp = document.querySelector("#promotion-img");
     var promotionResult = "";
@@ -61,6 +61,28 @@ function initTwo () {
   // oReq.open("GET", "./src/data/promotions.json"); //테스트코드
   oReq.send();
 
+}
+
+function initproduct() {
+  var oReq = new XMLHttpRequest();
+  oReq.addEventListener("load", function () {
+    var jsonObj = JSON.parse(this.responseText);
+
+    var productTemp = document.querySelector("#product-list");
+    var productWindow = document.querySelector(".products ul");
+    var datas = jsonObj.products;
+    var result = "";
+
+    for (var i=0; i< datas.length; i++){
+      result += productTemp.innerHTML.replace("{description}", datas[i].description)
+          .replace("{placeName}",datas[i].placeName)
+          .replace("{content}",datas[i].content)
+          .replace("{id}", datas[i].fileId);
+    }
+    productWindow.innerHTML = result;
+  })
+  oReq.open("GET", `${baseUrl}/api/products`);
+  oReq.send();
 }
 
 
@@ -109,6 +131,8 @@ function active(evt, cate) {
      case "연극":
        var param = "categoryId=5";
        break;
+     case "전체리스트":
+       var param = "";
      default:
        break;
    }
@@ -232,8 +256,9 @@ function topMove() {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-    initOne();
-    initTwo();
+    initcategori();
+    initpromotions();
+    initproduct();
     topMove();
 
 })
