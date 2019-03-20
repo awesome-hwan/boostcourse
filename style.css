@@ -217,11 +217,9 @@ article.products li figure figcaption .product-detail:before {
   /*top: 1.8rem;*/
 }
 
-.more_view {
-  text-align: center;
-}
 
-.more_view button {
+
+.more_view {
   margin-top: 1rem;
   background: #ffffff;
   width: 100%;

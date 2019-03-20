@@ -63,7 +63,7 @@ function initproduct() {
     var productTemp = document.querySelector("#product-list");
     var productWindow = document.querySelector(".products ul");
     var datas = jsonObj.products;
-    console.log("########",jsonObj);
+
     var result = "";
 
     for (var i=0; i< datas.length; i++){
@@ -82,14 +82,49 @@ function initproduct() {
     cateWindow.innerHTML = cateCount.innerHTML.replace('{count}', total);
 
   })
-  oReq.open("GET", `${baseUrl}/api/products`);
+  oReq.open("GET", `${baseUrl}/api/products?&start=0`);
   oReq.send();
 }
 
+function promotionMove() {
+  var promotionImg = document.querySelectorAll(".promotion-window img");
+  var promotionWindow = document.querySelector(".promotion-window");
+  var firstItem = promotionImg[0];
 
-function active(evt, cate) {
+  var current = 1;
+  var per = -100;
+  var setTime = 2000;
+
+  promotionWindow.appendChild(firstItem.cloneNode());
+
+  setInterval( function() {
+    current++;
+    if(current > promotionImg.length){
+      promotionWindow.style.transform = `translateX(${per}%)`;
+      promotionWindow.style.transition = `all 1s ease-out`;
+      per -= 100;
+
+      setTimeout(function() {
+        promotionWindow.style.transform = `translateX(0%)`;
+        promotionWindow.style.transition = `none`;
+        current = 1;
+        per = -100;
+      }, setTime/2);
+
+    } else {
+
+      promotionWindow.style.transform = `translateX(${per}%)`;
+      promotionWindow.style.transition = `all 1s ease-out`;
+      per -= 100;
+
+    }
+  }, setTime)
+}
+
+function active(evt) {
     var url = `${baseUrl}/api/products`;
-
+    var more = document.querySelector(".more_view");
+    more.style.display ='block';
     // 카테고리 클릭시 contents 활성화
     var activeList = document.querySelectorAll('.categories-ul a');
     for (var i=0; i<activeList.length; i++){
@@ -121,6 +156,7 @@ function active(evt, cate) {
        break;
    }
   sendAjax(url, param);
+  viewMoreSendAjax(param);
 }
 
 // 클릭시 promotion을 가져온다
@@ -130,7 +166,7 @@ function sendAjax(url, param) {
     var data = JSON.parse(this.responseText);
     makeTemplate(data);
 
-    console.log(data);
+
     // 카테고리 클릭시 count 변경
     var total = data.totalCount;
     var cateCount = document.querySelector("#categori-count");
@@ -144,7 +180,7 @@ function sendAjax(url, param) {
   oReq.open("GET", `${url}?${param}`);
   oReq.send();
 
-  viewMoreSendAjax(param);
+
 }
 
 
@@ -163,92 +199,49 @@ function makeTemplate(data) {
     productWindow.innerHTML = result;
 }
 
+function viewMoreSendAjax(param) {
+  var more = document.querySelector(".more_view");
+  var start = 0;
+  var maxLeng = 10;
+  let moreUrl = "";
 
+    more.addEventListener("click", function() {
 
-function promotionMove() {
-  var promotionImg = document.querySelectorAll(".promotion-window img");
-  var promotionWindow = document.querySelector(".promotion-window");
-  var firstItem = promotionImg[0];
+      if ( start < maxLeng) {
+        start += 4;
+        console.log("작을때",start);
+        console.log("작을때",maxLeng);
 
-  var current = 1;
-  var per = -100;
-  var setTime = 2000;
-
-      promotionWindow.appendChild(firstItem.cloneNode());
-
-      setInterval( function() {
-      current++;
-        if(current > promotionImg.length){
-            promotionWindow.style.transform = `translateX(${per}%)`;
-            promotionWindow.style.transition = `all 1s ease-out`;
-            per -= 100;
-
-            setTimeout(function() {
-                promotionWindow.style.transform = `translateX(0%)`;
-                promotionWindow.style.transition = `none`;
-                current = 1;
-                per = -100;
-            }, setTime/2);
-
-        } else {
-
-          promotionWindow.style.transform = `translateX(${per}%)`;
-          promotionWindow.style.transition = `all 1s ease-out`;
-          per -= 100;
-
-          }
-      }, setTime)
+      } else {
+        // more.style.display ='none';
+        console.log("클때클때",start);
+      }
+      let moreUrl = `${baseUrl}/api/products?${param}&start=${start}`;
+      vireMoreTemplate( moreUrl)
+  });
 }
 
-function vireMoreTemplate(datas) {
+function vireMoreTemplate( moreUrl) {
 
+  console.log("#########",moreUrl);
   var result = "";
   var productTemp = document.querySelector("#product-list");
   var productWindow = document.querySelector(".products ul");
 
-    for (var i=0; i< datas.length; i++){
-      result += productTemp.innerHTML.replace("{description}", datas[i].description)
-          .replace("{placeName}",datas[i].placeName)
-          .replace("{content}",datas[i].content)
-          .replace("{id}", datas[i].fileId);
-    }
-    productWindow.innerHTML += result;
+  /*for (var i=0; i< datas.length; i++){
+    result += productTemp.innerHTML.replace("{description}", datas[i].description)
+        .replace("{placeName}",datas[i].placeName)
+        .replace("{content}",datas[i].content)
+        .replace("{id}", datas[i].fileId);
+  }
+  productWindow.innerHTML += result;*/
 }
-
-function viewMoreSendAjax(param) {
-  var more = document.querySelector(".more_view button");
-  var start = 0;
-
-  var oReq = new XMLHttpRequest();
-      oReq.addEventListener('load', function() {
-
-  var data = JSON.parse(this.responseText);
-
-  var datas = data.products;
-
-    more.addEventListener("click", function() {
-      if (start >= 0){
-        start += 4;
-      }
-
-      vireMoreTemplate(datas);
-    })
-
-
-  });
-  var moreUrl = `${baseUrl}/api/products?${param}&start=${start}`;
-
-  oReq.open("GET", moreUrl);
-  oReq.send();
-}
-
 
 
 function topMove() {
   var movebtn = document.querySelector(".top_move");
-  movebtn.addEventListener("click", function () {
+      movebtn.addEventListener("click", function () {
     window.scrollTo(0,0);
-
   })
 }
 
@@ -257,5 +250,4 @@ document.addEventListener("DOMContentLoaded", function() {
     initpromotions();
     initproduct();
     topMove();
-
 })
