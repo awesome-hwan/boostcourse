@@ -228,13 +228,13 @@ function vireMoreTemplate( moreUrl) {
   var productTemp = document.querySelector("#product-list");
   var productWindow = document.querySelector(".products ul");
 
-  /*for (var i=0; i< datas.length; i++){
+  for (var i=0; i< datas.length; i++){
     result += productTemp.innerHTML.replace("{description}", datas[i].description)
         .replace("{placeName}",datas[i].placeName)
         .replace("{content}",datas[i].content)
         .replace("{id}", datas[i].fileId);
   }
-  productWindow.innerHTML += result;*/
+  productWindow.innerHTML += result;
 }
 
 
